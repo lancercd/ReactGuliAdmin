@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
@@ -47,6 +48,7 @@
     "less": "^4.1.2",
     "less-loader": "5.0.0",
     "mini-css-extract-plugin": "0.11.3",
+    "nprogress": "^0.2.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
     "postcss-flexbugs-fixes": "4.2.1",
@@ -156,5 +158,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.15.8"
   }
 }

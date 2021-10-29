@@ -1,0 +1,21 @@
+.loginFormBox {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    width: 400px;
+    height: 400px;
+    /*background-color: red;*/
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+}
+
+
+.title {
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+}

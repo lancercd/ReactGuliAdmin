@@ -14,7 +14,7 @@
   resolved "https://registry.npmmirror.com/@ant-design/icons-svg/download/@ant-design/icons-svg-4.2.1.tgz?cache=0&sync_timestamp=1632479085229&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40ant-design%2Ficons-svg%2Fdownload%2F%40ant-design%2Ficons-svg-4.2.1.tgz#8630da8eb4471a4aabdaed7d1ff6a97dcb2cf05a"
   integrity sha1-hjDajrRHGkqr2u19H/apfcss8Fo=
 
-"@ant-design/icons@^4.6.3":
+"@ant-design/icons@^4.6.3", "@ant-design/icons@^4.7.0":
   version "4.7.0"
   resolved "https://registry.npmmirror.com/@ant-design/icons/download/@ant-design/icons-4.7.0.tgz?cache=0&sync_timestamp=1632478665145&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40ant-design%2Ficons%2Fdownload%2F%40ant-design%2Ficons-4.7.0.tgz#8c3cbe0a556ba92af5dc7d1e70c0b25b5179af0f"
   integrity sha1-jDy+ClVrqSr13H0ecMCyW1F5rw8=
@@ -378,6 +378,15 @@
     "@babel/helper-plugin-utils" "^7.10.4"
     "@babel/plugin-syntax-decorators" "^7.12.1"
 
+"@babel/plugin-proposal-decorators@^7.15.8":
+  version "7.15.8"
+  resolved "https://registry.npmmirror.com/@babel/plugin-proposal-decorators/download/@babel/plugin-proposal-decorators-7.15.8.tgz#eb2969abf8993f15289f09fed762bb1df1521bd5"
+  integrity sha1-6ylpq/iZPxUonwn+12K7HfFSG9U=
+  dependencies:
+    "@babel/helper-create-class-features-plugin" "^7.15.4"
+    "@babel/helper-plugin-utils" "^7.14.5"
+    "@babel/plugin-syntax-decorators" "^7.14.5"
+
 "@babel/plugin-proposal-dynamic-import@^7.12.1", "@babel/plugin-proposal-dynamic-import@^7.14.5":
   version "7.14.5"
   resolved "https://registry.nlark.com/@babel/plugin-proposal-dynamic-import/download/@babel/plugin-proposal-dynamic-import-7.14.5.tgz?cache=0&sync_timestamp=1623280457211&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40babel%2Fplugin-proposal-dynamic-import%2Fdownload%2F%40babel%2Fplugin-proposal-dynamic-import-7.14.5.tgz#0c6617df461c0c1f8fff3b47cd59772360101d2c"
@@ -533,7 +542,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
 
-"@babel/plugin-syntax-decorators@^7.12.1":
+"@babel/plugin-syntax-decorators@^7.12.1", "@babel/plugin-syntax-decorators@^7.14.5":
   version "7.14.5"
   resolved "https://registry.nlark.com/@babel/plugin-syntax-decorators/download/@babel/plugin-syntax-decorators-7.14.5.tgz#eafb9c0cbe09c8afeb964ba3a7bbd63945a72f20"
   integrity sha1-6vucDL4JyK/rlkujp7vWOUWnLyA=
@@ -7849,6 +7858,11 @@ npm-run-path@^4.0.0:
   integrity sha1-t+zR5e1T2o43pV4cImnguX7XSOo=
   dependencies:
     path-key "^3.0.0"
+
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmmirror.com/nprogress/download/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
 
 nth-check@^1.0.2:
   version "1.0.2"

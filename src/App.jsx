@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
-import {Button} from "antd";
+import React, {Component, Fragment} from 'react';
+import Index from "./pages/Index";
 
 class App extends Component {
     render() {
         return (
-            <div>
-                app
-                <Button type="primary">btn</Button>
-            </div>
+            <Fragment>
+                <Index />
+            </Fragment>
         );
     }
 }

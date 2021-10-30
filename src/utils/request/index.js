@@ -2,6 +2,7 @@ import axios from "axios";
 // import qs from "querystring";
 import NProgress from "nprogress";  // yarn add nprogress  // 顶部显示加载条
 import "nprogress/nprogress.css";
+import {message} from "antd";
 
 // const BASE_URL = "http://159.75.128.32:5000/api";
 const BASE_URL = 'http://127.0.0.1:9527/api';
@@ -14,6 +15,7 @@ const index = axios.create({
 
 
 index.interceptors.request.use(config => {
+    // 顶部显示加载条开始
     NProgress.start();
     const {method, data} = config;
 
@@ -33,14 +35,20 @@ index.interceptors.request.use(config => {
 
 
 index.interceptors.response.use(res => {
+
+    // 顶部显示加载条结束
     NProgress.done();
     const {data} = res;
 
     return (data.errno === 0) ? data : Promise.reject(data);
 }, err => {
-    NProgress.done();
-    console.log("网络错误？", err);
 
+    // 顶部显示加载条开始
+    NProgress.done();
+    // 显示错误信息
+    message.error("网络中断...");
+
+    // 避免api函数调用的时候处理
     return new Promise(() => {});
 })
 

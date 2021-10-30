@@ -27,7 +27,7 @@ class StorageUtil {
         if(StringUtil.isEmpty(key)){
             throw Error("key is invalid");
         }
-        const data = window.localStorage.getItem("key");
+        const data = window.localStorage.getItem(key);
         try {
             return JSON.parse(data);
         }catch (e) {

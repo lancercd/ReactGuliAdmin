@@ -4,7 +4,20 @@ import 'antd/dist/antd.css';
 import App from "./App";
 
 ReactDOM.render(
-        <App/>
+    <App/>
     ,
     document.getElementById("root")
 );
+
+
+// 若单独使用redux
+/*
+store.subscribe(() => {
+    ReactDOM.render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>,
+        document.getElementById('root')
+    );
+})
+*/

@@ -4,19 +4,36 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import {usernameRules, passwordRules} from "../../../rules/user";
 import {loginApi} from "../../../api/auth";
-import StorageUtil from "../../../utils/StorageUtil";
+import {connect as ConnectRedux} from "react-redux";
+import {add_user_action} from "../../../store/actions/userInfo";
 
 
 const Item = Form.Item;
 
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {
+    loginAction: add_user_action
+}
+
+
+@ConnectRedux(mapStateToProps, mapDispatchToProps)
 class LoginForm extends Component {
 
+    /**
+     * on form submit
+     * @param values form data
+     */
     onFinish(values) {
         loginApi(values).then(res => {
             const {data} = res;
-            StorageUtil.setItem("token", data.token);
-            StorageUtil.setItem("username", data.username);
-            console.log(res);
+
+            // 存入redux 仓库中
+            this.props.loginAction({
+                user: data.user,
+                token: data.token,
+                isLogin: true
+            });
+
             message.success("登录成功");
             // this.props.history.replace("/");
         }).catch(e => {

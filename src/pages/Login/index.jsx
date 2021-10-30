@@ -4,11 +4,6 @@ import Css from "./index.module.css";
 import LoginForm from "./LoginForm";
 
 class Login extends Component {
-    constructor(props) {
-        super(props);
-        console.log(props);
-    }
-
 
     render() {
         return (

@@ -1,4 +1,4 @@
-import React, {Component, lazy} from 'react';
+import React, {Component, lazy, Suspense} from 'react';
 import {Layout} from "antd";
 import MainMenu from "../MainMenu";
 import {Route, Switch, Redirect} from "react-router-dom";
@@ -8,6 +8,7 @@ import Product from "../../pages/Product";
 import Role from "../../pages/Role";
 import User from "../../pages/User";
 import MainHeader from "../MainHeader";
+import Loading from "../Loading";
 
 const NotFound = lazy(() => import("../../pages/NotFound"));
 
@@ -19,15 +20,17 @@ class MainLayout extends Component {
     renderRoutes() {
         return (
             <>
-                <Switch>
-                    <Route exact path="/home" component={Home} />
-                    <Route exact path="/admin" component={Admin} />
-                    <Route exact path="/product" component={Product} />
-                    <Route exact path="/role" component={Role} />
-                    <Route exact path="/user" component={User} />
-                    <Redirect exact from="/" to="/home" />
-                    <Route to="*" component={NotFound} />
-                </Switch>
+                <Suspense fallback={<Loading />}>
+                    <Switch>
+                        <Route exact path="/home" component={Home} />
+                        <Route exact path="/admin" component={Admin} />
+                        <Route exact path="/product" component={Product} />
+                        <Route exact path="/role" component={Role} />
+                        <Route exact path="/user" component={User} />
+                        <Redirect exact from="/" to="/home" />
+                        <Route to="*" component={NotFound} />
+                    </Switch>
+                </Suspense>
             </>
         )
     }

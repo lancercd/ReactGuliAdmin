@@ -1,14 +1,22 @@
 import React, {Component} from 'react';
 import {Menu, Dropdown, Modal} from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-
-import "./index.less";
 import {withRouter} from "react-router-dom";
-import StorageUtil from "../../utils/StorageUtil";
-import Connect from "../../utils/decorators/Connect";
+import {connect as ConnectRedux} from "react-redux";
+
+import {remove_user_action} from "../../store/actions/userInfo";
+import "./index.less";
 
 
-@Connect
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {
+    logoutAction: remove_user_action
+}
+
+/**
+ * 主页面上方header
+ */
+@ConnectRedux(mapStateToProps, mapDispatchToProps)
 class MainHeader extends Component {
 
     /**
@@ -19,21 +27,29 @@ class MainHeader extends Component {
     }
 
 
+    /**
+     * 退出提示框
+     * @param e
+     */
     logoutBtnClickHandler(e) {
         e.stopPropagation();
         Modal.confirm({
             content: "确认退出吗?",
-            onOk:() => {
-                // 删除保存的用户数据
-                StorageUtil.removeItem("token");
-                StorageUtil.removeItem("username");
-
-                //跳转到login
-                this.props.history.replace("/login");
-            },
+            onOk:this.doLogout.bind(this),
             onCancel: () => {}
         });
-        console.log("logout");
+    }
+
+
+    /**
+     * 确认退出
+     */
+    doLogout() {
+        // 清除redux和LocalStorage中存储的用户信息 以及 token
+        this.props.logoutAction();
+
+        //跳转到login页面
+        // this.props.history.replace("/login");
     }
 
     renderHeaderMenu() {

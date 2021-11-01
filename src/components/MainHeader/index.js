@@ -4,11 +4,12 @@ import { DownOutlined } from '@ant-design/icons';
 import {withRouter} from "react-router-dom";
 import {connect as ConnectRedux} from "react-redux";
 
-import {remove_user_action} from "../../store/actions/userInfo";
 import "./index.less";
+import {remove_user_action} from "../../store/actions/userInfo";
+import {USER_INFO_STORE_NAME} from "../../store/constant";
 
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({username: state[USER_INFO_STORE_NAME].user.username});
 const mapDispatchToProps = {
     logoutAction: remove_user_action
 }
@@ -18,13 +19,6 @@ const mapDispatchToProps = {
  */
 @ConnectRedux(mapStateToProps, mapDispatchToProps)
 class MainHeader extends Component {
-
-    /**
-     * 组件卸载前调用
-     */
-    componentWillUnmount() {
-
-    }
 
 
     /**
@@ -47,8 +41,6 @@ class MainHeader extends Component {
     doLogout() {
         // 清除redux和LocalStorage中存储的用户信息 以及 token
         this.props.logoutAction();
-
-        console.log("logout");
 
         //跳转到login页面
         this.props.history.replace("/login");
@@ -73,7 +65,8 @@ class MainHeader extends Component {
                     <span>欢迎, </span>
                     <Dropdown overlay={this.renderHeaderMenu()} trigger={['click']}>
                         <div  className="ant-dropdown-link header-menu-btn" onClick={e => e.preventDefault()}>
-                            admin <DownOutlined />
+                            {this.props.username}
+                            <DownOutlined />
                         </div>
                     </Dropdown>
                 </div>

@@ -71,7 +71,7 @@ class MainLayout extends Component {
      */
     renderFooter() {
         return (
-            Footer
+            "Footer"
         );
     }
 

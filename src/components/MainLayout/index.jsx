@@ -22,10 +22,16 @@ const mapStateToProps = (state) => ({isLogin: state[USER_INFO_STORE_NAME].isLogi
 const mapDispatchToProps = {}
 
 
-
+/**
+ * 页面主要布局
+ */
 @ConnectRedux(mapStateToProps, mapDispatchToProps)
 class MainLayout extends Component {
 
+    /**
+     * 渲染content中的route
+     * @returns {JSX.Element}
+     */
     renderRoutes() {
         return (
             <>

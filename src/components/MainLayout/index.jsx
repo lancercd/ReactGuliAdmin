@@ -82,7 +82,7 @@ class MainLayout extends Component {
                     {this.renderMenu()}
                 </Sider>
                 <Layout>
-                    <Header style={{backgroundColor: "#f0f2f5"}}>
+                    <Header title="9999999" style={{backgroundColor: "#f0f2f5"}}>
                         {this.renderHeader()}
                     </Header>
                     <Content style={{backgroundColor: "#fff"}}>

@@ -1,13 +1,61 @@
 .MainHeader {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   height: 100%;
 
-  .header-menu-btn {
-    display: inline-block;
-    color: #1890ff;
-    cursor: pointer;
+  .header-top {
+    height: 50%;
+    line-height: 32px;
+    text-align: right;
+
+    .header-menu-btn {
+      display: inline-block;
+      color: #1890ff;
+      cursor: pointer;
+      height: 100%;
+
+    }
   }
+
+  .header-bottom {
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+    line-height: 32px;
+
+    .title {
+      line-height: 25px;
+      font-size: 25px;
+    }
+
+    .day-info {
+      display: flex;
+      width: 160px;
+      justify-content: space-between;
+
+      .time {
+        display: flex;
+        flex: 1;
+        width: 60%;
+        justify-content: space-between;
+        margin-right: 5px;
+      }
+
+      .img-box {
+        width: 20px;
+        vertical-align: center;
+        text-align: center;
+
+        img {
+          width: 20px;
+          height: 20px;
+          margin-bottom: 3px;
+        }
+      }
+    }
+  }
+
+
 }
 
 

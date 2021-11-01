@@ -20,7 +20,6 @@ const mapDispatchToProps = {
 @ConnectRedux(mapStateToProps, mapDispatchToProps)
 class MainHeader extends Component {
 
-
     /**
      * 退出提示框
      * @param e
@@ -33,7 +32,6 @@ class MainHeader extends Component {
             onCancel: () => {}
         });
     }
-
 
     /**
      * 确认退出
@@ -61,14 +59,28 @@ class MainHeader extends Component {
     render() {
         return (
             <div className="MainHeader">
-                <div>
+                <div className="header-top">
                     <span>欢迎, </span>
                     <Dropdown overlay={this.renderHeaderMenu()} trigger={['click']}>
-                        <div  className="ant-dropdown-link header-menu-btn" onClick={e => e.preventDefault()}>
+                        <div className="ant-dropdown-link header-menu-btn" onClick={e => e.preventDefault()}>
                             {this.props.username}
-                            <DownOutlined />
+                            <DownOutlined/>
                         </div>
                     </Dropdown>
+                </div>
+                <div className="header-bottom">
+                    <div className="title">
+                        柱状图
+                    </div>
+                    <div className="day-info">
+                        <div className="time">
+                            <div>2021-11-11</div>
+                            <div>11:11:11</div>
+                        </div>
+                        <div className="img-box">
+                            <img src="http://api.map.baidu.com/images/weather/day/qing.png" alt="天气信息"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

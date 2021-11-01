@@ -1,11 +1,9 @@
 import React, {Component, lazy, Suspense} from 'react';
-import {connect as ConnectRedux} from "react-redux";
 import {Route, Switch, Redirect} from "react-router-dom";
 import {Layout} from "antd";
 import MainMenu from "../MainMenu";
 import MainHeader from "../MainHeader";
 import Loading from "../Loading";
-import {USER_INFO_STORE_NAME} from "../../store/constant";
 
 
 const Home = lazy(() => import("../../pages/Home"));
@@ -18,21 +16,37 @@ const NotFound = lazy(() => import("../../pages/NotFound"));
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const mapStateToProps = (state) => ({isLogin: state[USER_INFO_STORE_NAME].isLogin});
-const mapDispatchToProps = {}
-
-
 /**
  * 页面主要布局
  */
-@ConnectRedux(mapStateToProps, mapDispatchToProps)
 class MainLayout extends Component {
+
+    /**
+     * 渲染左侧菜单
+     * @returns {JSX.Element}
+     */
+    renderMenu() {
+        return (
+            <MainMenu/>
+        );
+    }
+
+    /**
+     * 渲染header
+     * @returns {JSX.Element}
+     */
+    renderHeader() {
+        return (
+            <MainHeader />
+        );
+    }
+
 
     /**
      * 渲染content中的route
      * @returns {JSX.Element}
      */
-    renderRoutes() {
+    renderContent() {
         return (
             <>
                 <Suspense fallback={<Loading />}>
@@ -50,18 +64,33 @@ class MainLayout extends Component {
         )
     }
 
+
+    /**
+     * 渲染Footer
+     * @returns {JSX.Element}
+     */
+    renderFooter() {
+        return (
+            Footer
+        );
+    }
+
     render() {
         return (
             <Layout style={{height: "100%"}}>
-                <Sider width={250} theme={"light"}><MainMenu /></Sider>
+                <Sider width={250} theme={"light"}>
+                    {this.renderMenu()}
+                </Sider>
                 <Layout>
                     <Header style={{backgroundColor: "#f0f2f5"}}>
-                        <MainHeader />
+                        {this.renderHeader()}
                     </Header>
                     <Content style={{backgroundColor: "#fff"}}>
-                        {this.renderRoutes()}
+                        {this.renderContent()}
                     </Content>
-                    <Footer style={{textAlign: "center"}}>Footer</Footer>
+                    <Footer style={{textAlign: "center"}}>
+                        {this.renderFooter()}
+                    </Footer>
                 </Layout>
             </Layout>
         );

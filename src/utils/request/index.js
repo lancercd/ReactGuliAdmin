@@ -43,15 +43,45 @@ index.interceptors.response.use(res => {
 
     // 顶部显示加载条结束
     NProgress.done();
-    const {data} = res;
 
-    return (data.errno === 0) ? data : Promise.reject(data);
+    let data = null;
+    if (res.config && res.config.needAll === true) {
+        data = res;
+    }else {
+        data = res.data;
+    }
+
+    return (res.data.errno === 0) ? data : Promise.reject(data);
 }, err => {
-
     // 顶部显示加载条开始
     NProgress.done();
-    // 显示错误信息
-    message.error("网络中断...");
+    if(err.config && err.config.needAll === true) {
+        return Promise.reject({config: err.config, request: err.request, response: err.response});
+    }
+
+    if (err.response) {
+        // The request was made and the server responded with a status code that falls out of the range of 2xx
+        if(err.response.status === 401) {
+            // 没有权限
+            console.error("没有权限!");
+            message.error("没有权限!");
+
+        }
+
+    } else if (err.request) {
+        /*
+            The request was made but no response was received
+            error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            http.ClientRequest in node.js
+         */
+        // 显示错误信息
+        message.error("网络中断...");
+
+    } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', err.message);
+    }
+    console.log(err.config);
 
     // 避免api函数调用的时候处理
     return new Promise(() => {});

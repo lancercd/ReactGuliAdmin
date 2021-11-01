@@ -35,7 +35,7 @@ class LoginForm extends Component {
             });
 
             message.success("登录成功");
-            // this.props.history.replace("/");
+            this.props.history.replace("/");
         }).catch(e => {
             console.log("catch", e);
             message.error(e.status);

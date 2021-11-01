@@ -48,15 +48,17 @@ class MainHeader extends Component {
         // 清除redux和LocalStorage中存储的用户信息 以及 token
         this.props.logoutAction();
 
+        console.log("logout");
+
         //跳转到login页面
-        // this.props.history.replace("/login");
+        this.props.history.replace("/login");
     }
 
     renderHeaderMenu() {
         return (
             <Menu>
                 <Menu.Item key="0">
-                    <div onClick={this.logoutBtnClickHandler.bind(this)}>1st menu item</div>
+                    <div onClick={this.logoutBtnClickHandler.bind(this)}>退出登录</div>
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item key="3">3rd menu item</Menu.Item>

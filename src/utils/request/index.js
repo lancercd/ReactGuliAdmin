@@ -1,8 +1,9 @@
 import axios from "axios";
-// import qs from "querystring";
 import NProgress from "nprogress";  // yarn add nprogress  // 顶部显示加载条
 import "nprogress/nprogress.css";
 import {message} from "antd";
+import store from "../../store";
+import {USER_INFO_STORE_NAME} from "../../store/constant";
 
 // const BASE_URL = "http://159.75.128.32:5000/api";
 const BASE_URL = 'http://127.0.0.1:9527/api';
@@ -18,6 +19,10 @@ index.interceptors.request.use(config => {
     // 顶部显示加载条开始
     NProgress.start();
     const {method, data} = config;
+
+    // 添加token在header里面
+    const token = store.getState()[USER_INFO_STORE_NAME].token;
+    if(token) config.headers["Authorization"] = "lancercd_" + token;
 
     // 若是POST请求
     if(method && method.toLowerCase() === "post") {

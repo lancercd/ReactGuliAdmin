@@ -35,7 +35,7 @@ class LoginForm extends Component {
             });
 
             message.success("登录成功");
-            this.props.history.replace("/");
+            this.props.history.replace("/home");
         }).catch(e => {
             console.log("catch", e);
             message.error(e.status);
@@ -43,11 +43,9 @@ class LoginForm extends Component {
     };
 
     onValuesChange(changedValues, allValues) {
-        console.log(changedValues, allValues);
     }
 
     onFinishFailed({ values, errorFields, outOfDate }) {
-        console.log(values, errorFields, outOfDate);
     }
 
     render() {

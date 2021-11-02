@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { Menu } from 'antd';
 
 import menuList from "../../config/menuConfig";
-import {Link, withRouter} from "react-router-dom";
+import {Link, withRouter as WithRouter} from "react-router-dom";
 
 const { SubMenu, Item } = Menu;
 
@@ -10,24 +10,16 @@ const { SubMenu, Item } = Menu;
 /**
  * 左侧菜单
  */
+@WithRouter
 class MainMenu extends Component{
-    constructor(props) {
-        super(props);
-        this.currentPath = props.location.pathname;
-    }
-
-
-    state = {
-        selectedMenuKeys: ["/home"],
-    }
 
     renderMenuList(menuList) {
         return menuList.map(item => {
 
             // render submenu
-            if(item.children && item.children.length !== 0){
+            if(Array.isArray(item.children) && item.children.length !== 0){
                 return (
-                    <SubMenu key={item.path || item.title} icon={item.icon} title={item.title}>
+                    <SubMenu key={item.key || item.title} icon={item.icon} title={item.title}>
                         {this.renderMenuList(item.children)}
                     </SubMenu>
                 );
@@ -35,7 +27,7 @@ class MainMenu extends Component{
 
             // render menu item
             return (
-                <Item key={item.path} icon={item.icon}>
+                <Item key={item.key} icon={item.icon}>
                     <Link to={item.path} >{item.title}</Link>
                 </Item>
             );
@@ -50,7 +42,7 @@ class MainMenu extends Component{
     //     console.log("shouldComponentUpdate");
     //     return this.currentPath !== nextProps.location.pathname;
     // }
-
+/*
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         console.log("shouldComponentUpdate");
 
@@ -62,9 +54,9 @@ class MainMenu extends Component{
         // return this.currentPath !== nextProps.location.pathname;
         return false;
     }
-
+*/
     render() {
-        // this.currentPath = this.props.location.pathname;
+        const splitPathname = this.props.location.pathname.split("/");
         console.log("render MainMenu");
         return (
             <div style={{width: "100%"}}>
@@ -72,8 +64,9 @@ class MainMenu extends Component{
                     admin
                 </div>
                 <Menu
-                    // defaultSelectedKeys={[this.props.location.pathname]}
-                    selectedKeys={[this.currentPath]}
+                    defaultSelectedKeys={[splitPathname.pop() || "home"]}
+                    defaultOpenKeys={splitPathname}
+
                     mode="inline"
                     theme="light"
                 >
@@ -111,4 +104,4 @@ class MainMenu extends Component{
     }
 }
 
-export default withRouter(MainMenu);
+export default MainMenu;

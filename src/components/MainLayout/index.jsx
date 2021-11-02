@@ -53,9 +53,9 @@ class MainLayout extends Component {
                     <Switch>
                         <Route exact path="/home"    component={Home} />
                         <Route exact path="/admin"   component={Admin} />
+                        <Route exact path="/user/list"    component={User} />
                         <Route exact path="/product" component={Product} />
                         <Route exact path="/role"    component={Role} />
-                        <Route exact path="/user"    component={User} />
                         <Redirect exact from="/" to="/home" />
                         <Route to="*" component={NotFound} />
                     </Switch>

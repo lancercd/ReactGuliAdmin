@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
-import {Menu, Dropdown, Modal} from 'antd';
-import { DownOutlined } from '@ant-design/icons';
-import {withRouter} from "react-router-dom";
+import {Menu, Dropdown, Modal, Button} from 'antd';
+import {DownOutlined, FullscreenExitOutlined, FullscreenOutlined} from '@ant-design/icons';
+import {withRouter as WithRouter} from "react-router-dom";
 import {connect as ConnectRedux} from "react-redux";
+import screenFullPlugin from "screenfull";  // 页面全屏库 yarn add screenfull
 
 import "./index.less";
 import {remove_user_action} from "../../store/actions/userInfo";
 import {USER_INFO_STORE_NAME} from "../../store/constant";
+import HeaderTitle from "./HeaderTitle";
+import HeaderDate from "./HeaderDate";
 
 
 const mapStateToProps = (state) => ({username: state[USER_INFO_STORE_NAME].user.username});
@@ -18,11 +21,17 @@ const mapDispatchToProps = {
  * 主页面上方header
  */
 @ConnectRedux(mapStateToProps, mapDispatchToProps)
+@WithRouter
 class MainHeader extends Component {
+
+    state = {
+        // 当前是否为全屏状态
+        isScreenFull: false
+    }
 
     /**
      * 退出提示框
-     * @param e
+     * @param e Event
      */
     logoutBtnClickHandler(e) {
         e.stopPropagation();
@@ -44,6 +53,20 @@ class MainHeader extends Component {
         this.props.history.replace("/login");
     }
 
+    /**
+     * 页签全屏控制
+     */
+    doToggleScreenFull() {
+        screenFullPlugin.toggle().then(() => {
+            this.setState({
+                isScreenFull: !this.state.isScreenFull
+            })
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+
     renderHeaderMenu() {
         return (
             <Menu>
@@ -56,10 +79,17 @@ class MainHeader extends Component {
         );
     }
 
+
     render() {
+        console.log("MainHeader: render");
         return (
             <div className="MainHeader">
                 <div className="header-top">
+                    <span>
+                        <Button size="small" onClick={this.doToggleScreenFull.bind(this)}>
+                            {this.state.isScreenFull? <FullscreenExitOutlined /> : <FullscreenOutlined/>}
+                        </Button>
+                    </span>
                     <span>欢迎, </span>
                     <Dropdown overlay={this.renderHeaderMenu()} trigger={['click']}>
                         <div className="ant-dropdown-link header-menu-btn" onClick={e => e.preventDefault()}>
@@ -70,16 +100,10 @@ class MainHeader extends Component {
                 </div>
                 <div className="header-bottom">
                     <div className="title">
-                        柱状图
+                        <HeaderTitle />
                     </div>
                     <div className="day-info">
-                        <div className="time">
-                            <div>2021-11-11</div>
-                            <div>11:11:11</div>
-                        </div>
-                        <div className="img-box">
-                            <img src="http://api.map.baidu.com/images/weather/day/qing.png" alt="天气信息"/>
-                        </div>
+                        <HeaderDate />
                     </div>
                 </div>
             </div>
@@ -87,4 +111,4 @@ class MainHeader extends Component {
     }
 }
 
-export default withRouter(MainHeader);
+export default MainHeader;

@@ -1,5 +1,6 @@
 import {Redirect} from "react-router-dom";
 import store from "../../store";
+import getDisplayName from "../../utils/getDisplayName";
 import {USER_INFO_STORE_NAME} from "../../store/constant";
 
 
@@ -35,6 +36,8 @@ function LoginAuth(TargetComponent) {
 
     // 重写render函数
     Component.prototype.render = WrappedRenderFn;
+
+    Component.displayName = getDisplayName(TargetComponent);
 
     // 将处理后的容器或则组件返回回去
     return TargetComponent;

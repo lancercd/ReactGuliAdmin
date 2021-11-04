@@ -53,16 +53,21 @@ const menuList = [
         ]
     },
     {
-        title: "category",
-        key: "category",
-        path: "/category",
-        icon: <SettingOutlined />,
-    },
-    {
         title: "product",
         key: "product",
-        path: "/product",
         icon: <SettingOutlined />,
+        children: [
+            {
+                title: "分类管理",
+                key: "category",
+                path: "/product/category",
+            },
+            {
+                title: "商品管理",
+                key: "goods",
+                path: "/product/goods",
+            },
+        ]
     },
     {
         title: "role",

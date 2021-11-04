@@ -11,13 +11,13 @@ class HeaderTitle extends Component {
     }
 
     getTitle(menuList) {
-        let path = this.props.location.pathname.split("/")[1];
+        let path = this.props.location.pathname;
         for(const item of menuList) {
             if (Array.isArray(item.children) && item.children.length !== 0) {
                 let title = this.getTitle(item.children);
                 if(title) return title;
             }else {
-                if(path === item.title) {
+                if(path === item.path) {
                     return item.title;
                 }
             }

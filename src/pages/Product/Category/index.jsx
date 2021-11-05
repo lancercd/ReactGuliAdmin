@@ -8,7 +8,7 @@ class Category extends Component {
     state = {
         categoryList: [],       // 商品分类列表
         modalVisible: false,    // modal是否显示
-        modalType: "添加",      // modal类型
+        modalType: "add",      // modal类型
     }
 
     columns = [
@@ -29,6 +29,10 @@ class Category extends Component {
     ];
 
     componentDidMount() {
+        this.getCategoryList();
+    }
+
+    getCategoryList() {
         categoryListApi().then(res => {
             this.setState({
                 categoryList: res.data
@@ -42,14 +46,14 @@ class Category extends Component {
      * @param record
      */
     handleModifyBtnClick(text, record) {
-        this.setState({modalVisible: true, modalType: "修改"});
+        this.setState({modalVisible: true, modalType: "modify"});
     }
 
     /**
      * 添加按钮点击
      */
     handleAddBtnClick() {
-        this.setState({modalVisible: true, modalType: "添加"});
+        this.setState({modalVisible: true, modalType: "add"});
     }
 
     /**
@@ -66,32 +70,36 @@ class Category extends Component {
     handleModalOk() {
         const {modalType} = this.state;
         this.formRef.validateFields(["name"]).then(values => {
-            let api = null;
-            if(modalType === "添加") {
-                api = this.addCategory(values);
+            if(modalType === "add") {
+                this.addCategory(values);
             }else {
-                api = this.modifyCategory(values);
+                this.modifyCategory(values);
             }
-            api.then(res => {
-                console.log(res);
-                this.setState({modalVisible: false});
-                this.resetModalFormValue();
-            }).catch(e => {
-                console.log(e);
-            })
 
         }).catch(e => {
             console.log(e);
-            message.warning("类型名有误!");
+            message.warning("类型名有误!", 1);
         })
     }
 
     addCategory(name) {
-        return addCategoryApi(name)
+        addCategoryApi(name).then(res => {
+            this.getCategoryList();
+            this.setState({modalVisible: false});
+            this.resetModalFormValue();
+        }).catch(e => {
+            console.log(e);
+        })
     }
 
     modifyCategory(values) {
-        return modifyCategoryApi(values);
+        modifyCategoryApi(values).then(res => {
+            this.getCategoryList();
+            this.setState({modalVisible: false});
+            this.resetModalFormValue();
+        }).catch(e => {
+            console.log(e);
+        })
     }
 
 
@@ -120,7 +128,7 @@ class Category extends Component {
                     />
                 </Card>
                 <Modal
-                    title={this.state.modalType}
+                    title={this.state.modalType === "add" ? "添加" : "修改"}
                     centered
                     cancelText="取消"
                     okText="确定"
@@ -134,7 +142,7 @@ class Category extends Component {
                         autoComplete="off"
                     >
                         <Form.Item
-                            label="name"
+                            label="类型名"
                             name="name"
                             hasFeedback
                             rules={CategoryNameRules}

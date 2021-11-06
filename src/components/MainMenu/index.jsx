@@ -34,27 +34,12 @@ class MainMenu extends Component{
         })
     }
 
-    // UNSAFE_componentWillMount() {
-    //
-    // }
 
-    // shouldComponentUpdate(nextProps, nextState, nextContext) {
-    //     console.log("shouldComponentUpdate");
-    //     return this.currentPath !== nextProps.location.pathname;
-    // }
-/*
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        console.log("shouldComponentUpdate");
-
-        const pathName = nextProps.location.pathname;
-        if (this.currentPath !== pathName) {
-            this.currentPath = pathName;
-            return true;
-        }
-        // return this.currentPath !== nextProps.location.pathname;
-        return false;
+        return this.props.location.pathname !== nextProps.location.pathname;
     }
-*/
+    
+
     render() {
         const splitPathname = this.props.location.pathname.split("/");
         console.log("render MainMenu");
@@ -64,7 +49,7 @@ class MainMenu extends Component{
                     admin
                 </div>
                 <Menu
-                    defaultSelectedKeys={[splitPathname.pop() || "home"]}
+                    selectedKeys={[splitPathname.pop() || "home"]}
                     defaultOpenKeys={splitPathname}
 
                     mode="inline"

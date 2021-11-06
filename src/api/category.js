@@ -9,7 +9,7 @@ export function categoryListApi() {
 
 /**
  * 添加
- * @param data {name}
+ * @param data {{name}}
  * @returns {Promise}
  */
 export function addCategoryApi(data) {
@@ -22,7 +22,7 @@ export function addCategoryApi(data) {
 
 /**
  * 修改
- * @param data {id, name}
+ * @param data {{id, name}}
  * @returns {Promise}
  */
 export function modifyCategoryApi(data) {

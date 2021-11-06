@@ -46,7 +46,10 @@ class Category extends Component {
      * @param record
      */
     handleModifyBtnClick(text, record) {
-        this.setState({modalVisible: true, modalType: "modify"});
+        this.setState({modalVisible: true, modalType: "modify"}, () =>{
+            this.resetModalFormValue(text.name, text.id);
+        });
+
     }
 
     /**
@@ -60,8 +63,9 @@ class Category extends Component {
      * 弹出框取消按钮点击处理方法
      */
     handleModalCancel() {
-        this.setState({modalVisible: false});
-        this.resetModalFormValue();
+        this.setState({modalVisible: false}, () => {
+            this.resetModalFormValue();
+        });
     }
 
     /**
@@ -69,7 +73,7 @@ class Category extends Component {
      */
     handleModalOk() {
         const {modalType} = this.state;
-        this.formRef.validateFields(["name"]).then(values => {
+        this.formRef.validateFields(["name", "id"]).then(values => {
             if(modalType === "add") {
                 this.addCategory(values);
             }else {
@@ -82,12 +86,14 @@ class Category extends Component {
         })
     }
 
-    addCategory(name) {
-        addCategoryApi(name).then(res => {
+    addCategory(values) {
+        addCategoryApi({name: values.name}).then(res => {
+
             this.getCategoryList();
-            this.setState({modalVisible: false});
             this.resetModalFormValue();
+            this.setState({modalVisible: false});
         }).catch(e => {
+            message.warning(e.status, 1);
             console.log(e);
         })
     }
@@ -95,9 +101,10 @@ class Category extends Component {
     modifyCategory(values) {
         modifyCategoryApi(values).then(res => {
             this.getCategoryList();
-            this.setState({modalVisible: false});
             this.resetModalFormValue();
+            this.setState({modalVisible: false});
         }).catch(e => {
+            message.warning(e.status, 1);
             console.log(e);
         })
     }
@@ -105,10 +112,11 @@ class Category extends Component {
 
     /**
      * 重置input框中的value
-     * @param value
+     * @param name
+     * @param id
      */
-    resetModalFormValue(value = "") {
-        this.formRef.setFieldsValue({name: value});
+    resetModalFormValue(name = "", id = 0) {
+        this.formRef.setFieldsValue({name, id});
     }
 
     render() {
@@ -141,6 +149,12 @@ class Category extends Component {
                         name="basic"
                         autoComplete="off"
                     >
+                        <Form.Item
+                            hidden
+                            name="id"
+                        >
+                            <Input />
+                        </Form.Item>
                         <Form.Item
                             label="类型名"
                             name="name"

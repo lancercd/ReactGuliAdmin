@@ -122,9 +122,7 @@ class Category extends Component {
     render() {
         return (
             <>
-                <Card title="Default size card"
-                      extra={<Button type="primary" onClick={this.handleAddBtnClick.bind(this)}>添加</Button>}
-                >
+                <Card extra={<Button type="primary" onClick={this.handleAddBtnClick.bind(this)}>添加</Button>}>
                     <Table
                         bordered
                         rowKey="id"

@@ -5,6 +5,9 @@ class AddOrUpdate extends Component {
         return (
             <div>
                 <h3>addOrUpdate</h3>
+                <span>
+                    id:{this.props.match.params.id}
+                </span>
             </div>
         );
     }

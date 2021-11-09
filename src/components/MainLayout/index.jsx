@@ -60,7 +60,7 @@ class MainLayout extends Component {
                         <Route exact path="/product/category" component={Category} />
                         <Route exact path="/product/goods" component={Goods} />
                         <Route exact path="/product/goods/detail/:id" component={Detail} />
-                        <Route exact path="/product/goods/addOrUpdate/:id" component={AddOrUpdate} />
+                        <Route path="/product/goods/addOrUpdate/:id" component={AddOrUpdate} />
                         <Route exact path="/role"    component={Role} />
                         <Redirect exact from="/" to="/home" />
                         <Route to="*" component={NotFound} />

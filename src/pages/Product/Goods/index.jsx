@@ -213,7 +213,6 @@ class Goods extends Component {
      * @returns {JSX.Element}
      */
     renderActionMenu(id) {
-        console.log(id);
         return (
             <Menu>
                 <Menu.Item key="detail">

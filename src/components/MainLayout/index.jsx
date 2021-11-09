@@ -9,7 +9,9 @@ import Loading from "../Loading";
 const Home = lazy(() => import("../../pages/Home"));
 const Admin = lazy(() => import("../../pages/Admin"));
 const Category = lazy(() => import("../../pages/Product/Category")),
-      Goods = lazy(() => import("../../pages/Product/Goods"));
+      Goods = lazy(() => import("../../pages/Product/Goods")),
+      Detail = lazy(() => import("../../pages/Product/Detail")),
+      AddOrUpdate = lazy(() => import("../../pages/Product/AddOrUpdate"));
 const Role = lazy(() => import("../../pages/Role"));
 const User = lazy(() => import("../../pages/User"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
@@ -57,6 +59,8 @@ class MainLayout extends Component {
                         <Route exact path="/user/list"    component={User} />
                         <Route exact path="/product/category" component={Category} />
                         <Route exact path="/product/goods" component={Goods} />
+                        <Route exact path="/product/goods/detail/:id" component={Detail} />
+                        <Route exact path="/product/goods/addOrUpdate/:id" component={AddOrUpdate} />
                         <Route exact path="/role"    component={Role} />
                         <Redirect exact from="/" to="/home" />
                         <Route to="*" component={NotFound} />

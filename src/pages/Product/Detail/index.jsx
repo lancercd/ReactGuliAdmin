@@ -5,6 +5,7 @@ class Detail extends Component {
         return (
             <div>
                 <h3>detail</h3>
+                id:{this.props.match.params.id}
             </div>
         );
     }

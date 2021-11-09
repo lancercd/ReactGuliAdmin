@@ -4,26 +4,10 @@ import {productListApi, productStateChangeApi} from "../../../api/product";
 
 const {Option} = Select;
 
-const menu = (
-    <Menu>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                1st menu item
-            </a>
-        </Menu.Item>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                2nd menu item
-            </a>
-        </Menu.Item>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                3rd menu item
-            </a>
-        </Menu.Item>
-    </Menu>
-);
 
+/**
+ * 商品列表页
+ */
 class Goods extends Component {
 
     state = {
@@ -36,11 +20,12 @@ class Goods extends Component {
             total: 0,           // 数据总长度
             pageSize: 5,        // 每页显示多少条数据
             currentPageNum: 1,  // 当前在哪一页
-        },
-        modalVisible: false,// modal是否显示
-        modalType: "add",   // modal类型
+        }
     }
 
+    /**
+     * 表单列
+     */
     columns = [
         {
             title: 'Name',
@@ -88,8 +73,8 @@ class Goods extends Component {
             align: "center",
             width: "10%",
             render: (text, record) => (
-                <Dropdown overlay={menu} trigger={['click']} placement="bottomCenter">
-                    <Button>bottomCenter</Button>
+                <Dropdown overlay={this.renderActionMenu(record.id)} trigger={['click']} placement="bottomCenter">
+                    <Button>操作</Button>
                 </Dropdown>
             ),
         },
@@ -130,11 +115,17 @@ class Goods extends Component {
         })
     }
 
+    /**
+     * 添加按钮点击
+     */
     handleAddBtnClick() {
-
+        // 跳转到添加商品页
+        this.props.history.push(`/product/goods/addOrUpdate`);
     }
 
-
+    /**
+     * 搜索按钮点击
+     */
     handleSearchBtnClick() {
         const key = this.searchInputEl.input.value.trim();
         const newSearch = {...this.state.search, key};
@@ -187,6 +178,10 @@ class Goods extends Component {
         this.getGoodsList(page, pageSize);
     }
 
+    /**
+     * 表单顶部搜索框 添加按钮
+     * @returns {JSX.Element}
+     */
     renderTitle() {
 
         return (
@@ -210,6 +205,24 @@ class Goods extends Component {
                 />
                 <Button type="primary" onClick={this.handleSearchBtnClick.bind(this)} >搜索</Button>
             </div>
+        );
+    }
+
+    /**
+     * 表单中操作菜单
+     * @returns {JSX.Element}
+     */
+    renderActionMenu(id) {
+        console.log(id);
+        return (
+            <Menu>
+                <Menu.Item key="detail">
+                    <Button onClick={() => {this.props.history.push(`/product/goods/detail/${id}`)}} type="link" block>详情</Button>
+                </Menu.Item>
+                <Menu.Item key="modify">
+                    <Button onClick={() => {this.props.history.push(`/product/goods/addOrUpdate/${id}`)}} type="link" block>修改</Button>
+                </Menu.Item>
+            </Menu>
         );
     }
 

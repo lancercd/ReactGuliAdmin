@@ -16,6 +16,8 @@ class MainMenu extends Component{
     renderMenuList(menuList) {
         return menuList.map(item => {
 
+            if(item.hidden === true) return null;
+
             // render submenu
             if(Array.isArray(item.children) && item.children.length !== 0){
                 return (
@@ -38,7 +40,7 @@ class MainMenu extends Component{
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return this.props.location.pathname !== nextProps.location.pathname;
     }
-    
+
 
     render() {
         const splitPathname = this.props.location.pathname.split("/");

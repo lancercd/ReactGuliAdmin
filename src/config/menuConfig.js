@@ -67,6 +67,18 @@ const menuList = [
                 key: "goods",
                 path: "/product/goods",
             },
+            {
+                title: "商品详情",
+                key: "goods_detail",
+                path: "/product/goods/detail/:id",
+                hidden: true
+            },
+            {
+                title: "商品添加or修改",
+                key: "goods_add_or_update",
+                path: "/product/goods/addOrUpdate/:id",
+                hidden: true
+            }
         ]
     },
     {

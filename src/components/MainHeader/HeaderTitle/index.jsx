@@ -10,14 +10,22 @@ class HeaderTitle extends Component {
         return this.props.location.pathname !== nextProps.location.pathname;
     }
 
-    getTitle(menuList) {
-        let path = this.props.location.pathname;
+    getCurrentPath() {
+        const {location, match} = this.props;
+        console.log(location);
+        console.log(match);
+        return (match.path === '/')? location.pathname : match.path;
+    }
+
+    getTitle(menuList, currentPath) {
+        console.log("currentPath", currentPath);
         for(const item of menuList) {
             if (Array.isArray(item.children) && item.children.length !== 0) {
-                let title = this.getTitle(item.children);
+                let title = this.getTitle(item.children, currentPath);
                 if(title) return title;
             }else {
-                if(path === item.path) {
+
+                if(currentPath === item.path) {
                     return item.title;
                 }
             }
@@ -27,10 +35,9 @@ class HeaderTitle extends Component {
     }
 
     render() {
-        console.log("render");
         return (
             <h5>
-                {this.getTitle(menuConfig) || "default"}
+                {this.getTitle(menuConfig, this.getCurrentPath()) || "default"}
             </h5>
         );
     }

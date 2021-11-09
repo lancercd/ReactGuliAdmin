@@ -24,15 +24,6 @@ const { Header, Footer, Sider, Content } = Layout;
  */
 class MainLayout extends Component {
 
-    /**
-     * 渲染左侧菜单
-     * @returns {JSX.Element}
-     */
-    renderMenu() {
-        return (
-            <MainMenu/>
-        );
-    }
 
     /**
      * 渲染header
@@ -85,10 +76,10 @@ class MainLayout extends Component {
         return (
             <Layout style={{height: "100%"}}>
                 <Sider width={250} theme={"light"}>
-                    {this.renderMenu()}
+                    <MainMenu/>
                 </Sider>
                 <Layout>
-                    <Header title="9999999" style={{backgroundColor: "#f0f2f5"}}>
+                    <Header style={{backgroundColor: "#f0f2f5"}}>
                         {this.renderHeader()}
                     </Header>
                     <Content style={{backgroundColor: "#fff"}}>

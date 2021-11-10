@@ -10,22 +10,13 @@ class HeaderTitle extends Component {
         return this.props.location.pathname !== nextProps.location.pathname;
     }
 
-    getCurrentPath() {
-        const {location, match} = this.props;
-        console.log(location);
-        console.log(match);
-        return (match.path === '/')? location.pathname : match.path;
-    }
-
     getTitle(menuList, currentPath) {
-        console.log("currentPath", currentPath);
         for(const item of menuList) {
             if (Array.isArray(item.children) && item.children.length !== 0) {
                 let title = this.getTitle(item.children, currentPath);
                 if(title) return title;
             }else {
-
-                if(currentPath === item.path) {
+                if(this.comparePath(item.path.split("/"), currentPath)) {
                     return item.title;
                 }
             }
@@ -34,10 +25,38 @@ class HeaderTitle extends Component {
         return null;
     }
 
+    /**
+     * 对比路径是否匹配
+     * @param target    menuConfig中的路径
+     * @param current   当前路由中的路径
+     * @returns {boolean}
+     */
+    comparePath(target, current) {
+        const lenA = target.length, lenB = current.length;
+
+        if(lenB > lenA) return false;
+
+        let cnt = 0;
+        for (let i = 0; i < lenA; ++i) {
+            if(target[i] && target[i][0] === ":") ++cnt;
+        }
+
+        if(lenB < (lenA - cnt)) return false;
+
+
+        for (let i = 0; i < lenA; ++i) {
+            if(target[i].startsWith(":")) break;
+
+            if(target[i] !== current[i]) return false;
+        }
+
+        return true;
+    }
+
     render() {
         return (
             <h5>
-                {this.getTitle(menuConfig, this.getCurrentPath()) || "default"}
+                {this.getTitle(menuConfig, this.props.location.pathname.split("/")) || "default"}
             </h5>
         );
     }

@@ -51,7 +51,8 @@ class MainMenu extends Component{
                     admin
                 </div>
                 <Menu
-                    selectedKeys={[splitPathname.pop() || "home"]}
+                    // selectedKeys={[splitPathname.pop() || "home"]}
+                    selectedKeys={splitPathname}
                     defaultOpenKeys={splitPathname}
 
                     mode="inline"

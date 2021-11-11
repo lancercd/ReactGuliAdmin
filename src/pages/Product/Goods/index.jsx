@@ -13,13 +13,13 @@ class Goods extends Component {
     state = {
         goodsList: [],      // 商品列表
         search: {
-            type: "name",
-            key: ""
+            type: this.props.location.state?.search?.type || "name",
+            key: this.props.location.state?.search?.key || ""
         },
         page: {
             total: 0,           // 数据总长度
-            pageSize: 5,        // 每页显示多少条数据
-            currentPageNum: 1,  // 当前在哪一页
+            pageSize: this.props.location.state?.page?.pageSize || 5,        // 每页显示多少条数据
+            currentPageNum: this.props.location.state?.page?.currentPageNum || 1,  // 当前在哪一页
         }
     }
 
@@ -187,7 +187,7 @@ class Goods extends Component {
         return (
             <div>
                 <Select
-                    defaultValue="name"
+                    defaultValue={this.state.search.type}
                     style={{ width: 120 }}
                     onChange={value => {this.setState({search: {...this.state.search, type: value}})}}
                 >
@@ -196,6 +196,7 @@ class Goods extends Component {
                 </Select>
                 <Input
                     style={{minWidth: 100, maxWidth: "20%"}}
+                    defaultValue={this.state.search.key}
                     allowClear
                     placeholder="请输入搜索关键字"
                     ref={el => this.searchInputEl = el}

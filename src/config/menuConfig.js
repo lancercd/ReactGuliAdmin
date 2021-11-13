@@ -74,9 +74,15 @@ const menuList = [
                 hidden: true
             },
             {
-                title: "商品添加or修改",
-                key: "goods_add_or_update",
-                path: "/product/goods/addOrUpdate/:id",
+                title: "商品新增",
+                key: "goods_add",
+                path: "/product/goods/add",
+                hidden: true
+            },
+            {
+                title: "商品修改",
+                key: "goods_update",
+                path: "/product/goods/update/:id",
                 hidden: true
             }
         ]

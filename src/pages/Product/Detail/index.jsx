@@ -26,7 +26,7 @@ class Detail extends Component {
 
     renderTitle() {
         return (
-            <Button type="link" onClick={() => {this.props.history.push("/product/goods", {search:{type: "description", key: "手"}});}}>
+            <Button type="link" onClick={() => {this.props.history.push("/product/goods", this.props.location.state);}}>
                 <ArrowLeftOutlined />返回商品详情
             </Button>
         );

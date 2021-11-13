@@ -120,7 +120,7 @@ class Goods extends Component {
      */
     handleAddBtnClick() {
         // 跳转到添加商品页
-        this.props.history.push(`/product/goods/add`);
+        this.props.history.push(`/product/goods/add`, this.getCurrentPageAndSearchInfo());
     }
 
     /**
@@ -179,6 +179,15 @@ class Goods extends Component {
     }
 
     /**
+     * 获取当前的页面信息
+     * @returns {{search: {type, key}, page: {total: number, pageSize, currentPageNum}}}
+     */
+    getCurrentPageAndSearchInfo() {
+        return {search: this.state.search, page: this.state.page};
+    }
+
+
+    /**
      * 表单顶部搜索框 添加按钮
      * @returns {JSX.Element}
      */
@@ -217,10 +226,10 @@ class Goods extends Component {
         return (
             <Menu>
                 <Menu.Item key="detail">
-                    <Button onClick={() => {this.props.history.push(`/product/goods/detail/${id}`)}} type="link" block>详情</Button>
+                    <Button onClick={() => {this.props.history.push(`/product/goods/detail/${id}`, this.getCurrentPageAndSearchInfo())}} type="link" block>详情</Button>
                 </Menu.Item>
                 <Menu.Item key="modify">
-                    <Button onClick={() => {this.props.history.push(`/product/goods/update/${id}`)}} type="link" block>修改</Button>
+                    <Button onClick={() => {this.props.history.push(`/product/goods/update/${id}`, this.getCurrentPageAndSearchInfo())}} type="link" block>修改</Button>
                 </Menu.Item>
             </Menu>
         );

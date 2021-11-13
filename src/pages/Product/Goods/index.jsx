@@ -120,7 +120,7 @@ class Goods extends Component {
      */
     handleAddBtnClick() {
         // 跳转到添加商品页
-        this.props.history.push(`/product/goods/addOrUpdate`);
+        this.props.history.push(`/product/goods/add`);
     }
 
     /**
@@ -220,7 +220,7 @@ class Goods extends Component {
                     <Button onClick={() => {this.props.history.push(`/product/goods/detail/${id}`)}} type="link" block>详情</Button>
                 </Menu.Item>
                 <Menu.Item key="modify">
-                    <Button onClick={() => {this.props.history.push(`/product/goods/addOrUpdate/${id}`)}} type="link" block>修改</Button>
+                    <Button onClick={() => {this.props.history.push(`/product/goods/update/${id}`)}} type="link" block>修改</Button>
                 </Menu.Item>
             </Menu>
         );

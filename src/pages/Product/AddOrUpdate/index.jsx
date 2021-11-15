@@ -1,21 +1,45 @@
 import React, {Component} from 'react';
 import {idRegExp} from "../../../rules/product";
-import {Button, Card as Container, Checkbox, Form, Input, message} from "antd";
-import {passwordRules, usernameRules} from "../../../rules/user";
-import {ArrowLeftOutlined, LockOutlined, UserOutlined} from "@ant-design/icons";
+import {Button, Card as Container, Form, Input, message, Select} from "antd";
+import {ArrowLeftOutlined} from "@ant-design/icons";
 
 import "./index.less";
+import {categoryListApi} from "../../../api/category";
+import PicturesWall from "../../../components/PicturesUpload";
 
 
 const Item = Form.Item;
 
 
+const normFile = (e) => {
+    console.log('Upload event:', e);
+
+    if (Array.isArray(e)) {
+        return e;
+    }
+
+    return e && e.fileList;
+};
+
+
+
 class AddOrUpdate extends Component {
+
+    state = {
+        categoryList: []
+    }
+
+    formItemLayout = {
+        labelCol: {
+            span: 3,
+        },
+        wrapperCol: {
+            span: 14,
+        },
+    };
 
     constructor(props) {
         super(props);
-        console.log("addOrUpdate");
-        console.log(this.props);
 
         this.id = props.match.params.id;
 
@@ -37,12 +61,29 @@ class AddOrUpdate extends Component {
         }
 
     }
+
     componentDidMount() {
         if(!this.isValidate) return;
-        console.log("AddOrUpdate: didMount");
 
-        console.log(this.isAdd ? "新增" : "修改");
+        this.getCategoryList();
     }
+
+    /**
+     * 获取商品所有分类
+     */
+    getCategoryList() {
+        categoryListApi().then(res => {
+            this.setState({
+                categoryList: res.data
+            })
+        });
+    }
+
+
+    onFinish(values) {
+        console.log(values);
+    }
+
 
     renderTitle() {
         return (
@@ -60,45 +101,69 @@ class AddOrUpdate extends Component {
             <Container title={this.renderTitle()}>
                 <Form
                     name="add-update-form"
+                    {...this.formItemLayout}
                     className="add-update-form"
                     initialValues={{remember: true}}
                     scrollToFirstError={true}
-                    // onFinish={this.onFinish.bind(this)}
+                    onFinish={this.onFinish.bind(this)}
                     // onFinishFailed={this.onFinishFailed.bind(this)}
                     // onValuesChange={this.onValuesChange.bind(this)}
                 >
                     <Item
-                        name="username"
-                        label="商品名称"
-                        hasFeedback
-                        rules={usernameRules}
+                        name="name"
+                        label="名称"
+                        rules={[{ required: true }]}
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                        <Input />
                     </Item>
                     <Item
-                        name="password"
+                        name="description"
+                        label="描述"
                         hasFeedback
-                        rules={passwordRules}
+                        rules={[{ required: true }]}
+                    >
+                        <Input />
+                    </Item>
+
+                    <Item
+                        name="price"
+                        label="价格"
+                        hasFeedback
+                        rules={[{ required: true }]}
                     >
                         <Input
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Password"
+                            prefix="￥"
+                            suffix="元"
+                            type="number"
+                            placeholder="0"
                         />
                     </Item>
-                    <Item>
-                        <Item name="remember" valuePropName="checked" noStyle>
-                            <Checkbox>Remember me</Checkbox>
-                        </Item>
 
-                        <span className="login-form-forgot">
-                        Forgot password
-                    </span>
+                    <Item name="category" label="分类" rules={[{ required: true }]}>
+                        <Select
+                            placeholder="Select a option and change input text above"
+                            allowClear
+                        >
+                            {
+                                this.state.categoryList.map(item =>
+                                    (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
+                                )
+                            }
+                        </Select>
+                     </Item>
+
+                    <Item name="images"
+                          label="商品图片"
+                          valuePropName="fileList"
+                          getValueFromEvent={normFile}
+                    >
+                        <PicturesWall ref={images => this.imagesEL = images} />
                     </Item>
+
 
                     <Item>
                         <Button type="primary" htmlType="submit" className="login-form-button">
-                            Log in
+                            提交
                         </Button>
                     </Item>
                 </Form>

@@ -1,37 +1,54 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Upload, Modal, message} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import {imageUrlPrefix, uploadImageUrl} from "../../config/fileUpload";
 
 
 class PicturesWall extends Component {
-    state = {
-        previewVisible: false,
-        previewImage: '',
-        previewTitle: '',
-        fileList: [
-            {
-                uid: '-1',
-                name: 'image.png',
-                status: 'done',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            preview: {
+                visible: false,
+                image: '',
+                title: '',
             },
-            // {
-            //     uid: '-xxx',
-            //     percent: 50,
-            //     name: 'image.png',
-            //     status: 'uploading',
-            //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            // },
-            // {
-            //     uid: '-5',
-            //     name: 'image.png',
-            //     status: 'error',
-            // },
-        ],
-    };
+            fileList: this.initFileListFromProps(props.urls),
+            max: props.max || -1
+        }
+    }
 
+    /**
+     * 从urls数组初始化fileList列表
+     *      添加id、name、status、url
+     * @param urls
+     * @returns {[]}
+     */
+    initFileListFromProps(urls) {
+        let res = [];
+        if (!urls || !Array.isArray(urls)) {
+            return res;
+        }
 
+        urls.forEach((url, index) => {
+            res.push({
+                uid: index,
+                // name: 'image.png',
+                status: 'done',
+                url: url,
+            })
+        })
+        return res;
+    }
+
+    /**
+     * 将fileList转换为urls数组
+     * @param fileList
+     * @returns {[]}
+     */
     getImageUrls(fileList) {
         let urls = [];
         const len = fileList.length;
@@ -50,19 +67,32 @@ class PicturesWall extends Component {
         return urls;
     }
 
+    /**
+     * 图片预览关闭
+     */
     handlePreviewCancel() {
-        this.setState({ previewVisible: false })
+        const preview = {...this.state.preview, visible: false};
+        this.setState({ preview })
     }
 
-    handlePreview = async file => {
+    /**
+     * 图片预览开启
+     */
+    handlePreview(file) {
 
         this.setState({
-            previewImage: file.url || file.preview,
-            previewVisible: true,
-            previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+            preview: {
+                image: file.url,
+                visible: true,
+                title: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+            }
         });
     };
 
+    /**
+     * 文件上传失败
+     * @param fileListItem
+     */
     handleFileUploadErr(fileListItem) {
         console.error("file upload error");
         fileListItem.status = "error";
@@ -86,12 +116,16 @@ class PicturesWall extends Component {
     /**
      * 移除某个文件
      * @param file
+     * @param fileList
      */
     onFileRemoved(file, fileList) {
         console.log("删除了某个文件");
         const {url} = file;
         if(!url) return;
-        // TODO 发送Ajax请求 删除服务器中的图片
+        /*
+            TODO  若无表单 发送Ajax请求 删除服务器中的图片
+                  若有表单 当表单提交时 发送Ajax发送请求
+         */
         console.log("发送Ajax请求, fileUrl:", url);
         this.props.onChange(this.getImageUrls(fileList));
     }
@@ -107,18 +141,24 @@ class PicturesWall extends Component {
             this.onFileRemoved(file, fileList);
         }
 
-
         this.setState({fileList});
     }
 
-    render() {
-        const { previewVisible, previewImage, fileList, previewTitle } = this.state;
-        const uploadButton = (
+    /**
+     * upload框
+     * @returns {JSX.Element}
+     */
+    renderUploadButton() {
+        return (
             <div>
                 <PlusOutlined />
                 <div style={{ marginTop: 8 }}>Upload</div>
             </div>
         );
+    }
+
+    render() {
+        const { preview, fileList } = this.state;
         return (
             <>
                 <Upload
@@ -127,23 +167,30 @@ class PicturesWall extends Component {
                     name="image"
                     listType="picture-card"
                     fileList={fileList}
-                    onPreview={this.handlePreview}
+                    onPreview={this.handlePreview.bind(this)}
                     onChange={this.handleFileListChange.bind(this)}
                 >
-                    {fileList.length >= 4 ? null : uploadButton}
+                    {(fileList.length >= this.state.max) ? null : this.renderUploadButton()}
                 </Upload>
                 <Modal
-                    visible={previewVisible}
-                    title={previewTitle}
+                    visible={preview.visible}
+                    title={preview.title}
                     footer={null}
                     onCancel={this.handlePreviewCancel.bind(this)}
                 >
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    <img alt="example" style={{ width: '100%' }} src={preview.image} />
                 </Modal>
             </>
         );
     }
 }
+
+
+PicturesWall.propTypes = {
+    onChange: PropTypes.func,
+    max: PropTypes.number,
+    urls: PropTypes.array
+};
 
 
 export default PicturesWall;

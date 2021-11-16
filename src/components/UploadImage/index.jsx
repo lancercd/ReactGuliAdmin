@@ -5,7 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import {imageUrlPrefix, uploadImageUrl} from "../../config/fileUpload";
 
 
-class PicturesWall extends Component {
+class UploadImage extends Component {
 
     constructor(props) {
         super(props);
@@ -186,11 +186,11 @@ class PicturesWall extends Component {
 }
 
 
-PicturesWall.propTypes = {
+UploadImage.propTypes = {
     onChange: PropTypes.func,
     max: PropTypes.number,
     urls: PropTypes.array
 };
 
 
-export default PicturesWall;
+export default UploadImage;

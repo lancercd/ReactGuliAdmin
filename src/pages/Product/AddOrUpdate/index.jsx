@@ -5,10 +5,7 @@ import {ArrowLeftOutlined} from "@ant-design/icons";
 
 import "./index.less";
 import {categoryListApi} from "../../../api/category";
-import PicturesWall from "../../../components/PicturesUpload";
-
-
-const Item = Form.Item;
+import UploadImage from "../../../components/UploadImage";
 
 
 const normFile = (e) => {
@@ -20,7 +17,6 @@ const normFile = (e) => {
 
     return e && e.fileList;
 };
-
 
 
 class AddOrUpdate extends Component {
@@ -109,23 +105,23 @@ class AddOrUpdate extends Component {
                     // onFinishFailed={this.onFinishFailed.bind(this)}
                     // onValuesChange={this.onValuesChange.bind(this)}
                 >
-                    <Item
+                    <Form.Item
                         name="name"
                         label="名称"
                         rules={[{ required: true }]}
                     >
                         <Input />
-                    </Item>
-                    <Item
+                    </Form.Item>
+                    <Form.Item
                         name="description"
                         label="描述"
                         hasFeedback
                         rules={[{ required: true }]}
                     >
                         <Input />
-                    </Item>
+                    </Form.Item>
 
-                    <Item
+                    <Form.Item
                         name="price"
                         label="价格"
                         hasFeedback
@@ -137,9 +133,9 @@ class AddOrUpdate extends Component {
                             type="number"
                             placeholder="0"
                         />
-                    </Item>
+                    </Form.Item>
 
-                    <Item name="category" label="分类" rules={[{ required: true }]}>
+                    <Form.Item name="category" label="分类" rules={[{ required: true }]}>
                         <Select
                             placeholder="Select a option and change input text above"
                             allowClear
@@ -150,22 +146,26 @@ class AddOrUpdate extends Component {
                                 )
                             }
                         </Select>
-                     </Item>
+                     </Form.Item>
 
-                    <Item name="images"
+                    <Form.Item name="images"
                           label="商品图片"
                           valuePropName="fileList"
                           getValueFromEvent={normFile}
                     >
-                        <PicturesWall ref={images => this.imagesEL = images} />
-                    </Item>
+                        <UploadImage
+                            ref={images => this.imagesEL = images}
+                            urls={["http://127.0.0.1:9527/image/9f976a7d-e3f3-460a-a0ed-b9084586ea3e.jpg"]}
+                            max={4}
+                        />
+                    </Form.Item>
 
 
-                    <Item>
+                    <Form.Item>
                         <Button type="primary" htmlType="submit" className="login-form-button">
                             提交
                         </Button>
-                    </Item>
+                    </Form.Item>
                 </Form>
             </Container>
         );

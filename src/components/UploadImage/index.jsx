@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Upload, Modal, message} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import {imageUrlPrefix, uploadImageUrl} from "../../config/fileUpload";
+import {uploadImageUrl} from "../../config/fileUpload";
 
 
 class UploadImage extends Component {
@@ -10,15 +10,20 @@ class UploadImage extends Component {
     constructor(props) {
         super(props);
 
+        // 由Form.Item传递的initialValue 进行初始化
+        let initialValue = null;
+        if (props.name) initialValue = props[props.name];
+
         this.state = {
             preview: {
                 visible: false,
                 image: '',
                 title: '',
             },
-            fileList: this.initFileListFromProps(props.urls),
+            fileList: this.initFileListFromProps(initialValue || props.urls),
             max: props.max || -1
-        }
+        };
+        this.submitValue(this.state.fileList);
     }
 
     /**
@@ -42,6 +47,13 @@ class UploadImage extends Component {
             })
         })
         return res;
+    }
+
+    submitValue(fileList) {
+        const onChange = this.props.onChange;
+        if (onChange) {
+            onChange(this.getImageUrls(fileList));
+        }
     }
 
     /**
@@ -107,8 +119,9 @@ class UploadImage extends Component {
         if (file.response.errno === 400) {
             this.handleFileUploadErr(file);
         }else {
-            file.url = imageUrlPrefix + file.response.data.url;
-            this.props.onChange(this.getImageUrls(fileList));
+            file.url = file.response.data.url;
+            console.log(file.url);
+            this.submitValue(fileList);
             message.success("文件上传成功!");
         }
     }
@@ -127,7 +140,7 @@ class UploadImage extends Component {
                   若有表单 当表单提交时 发送Ajax发送请求
          */
         console.log("发送Ajax请求, fileUrl:", url);
-        this.props.onChange(this.getImageUrls(fileList));
+        this.submitValue(fileList);
     }
 
 
@@ -189,7 +202,8 @@ class UploadImage extends Component {
 UploadImage.propTypes = {
     onChange: PropTypes.func,
     max: PropTypes.number,
-    urls: PropTypes.array
+    urls: PropTypes.array,
+    name: PropTypes.string
 };
 
 

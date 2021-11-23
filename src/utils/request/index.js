@@ -6,7 +6,7 @@ import store from "../../store";
 import {USER_INFO_STORE_NAME} from "../../store/constant";
 
 // const BASE_URL = "http://159.75.128.32:5000/api";
-const BASE_URL = 'http://127.0.0.1:9527/api';
+const BASE_URL = 'http://127.0.0.1:10086/api';
 
 const index = axios.create({
     baseURL: BASE_URL,
@@ -51,7 +51,7 @@ index.interceptors.response.use(res => {
         data = res.data;
     }
 
-    return (res.data.errno === 0) ? data : Promise.reject(data);
+    return (res.data.status === 0) ? data : Promise.reject(data);
 }, err => {
     // 顶部显示加载条开始
     NProgress.done();
@@ -79,7 +79,7 @@ index.interceptors.response.use(res => {
 
     } else {
         // Something happened in setting up the request that triggered an Error
-        console.log('Error', err.message);
+        console.log('Error', err.msg);
     }
     console.log(err.config);
 

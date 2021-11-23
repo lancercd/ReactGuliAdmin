@@ -2,7 +2,7 @@ import request from "../utils/request";
 
 export function categoryListApi() {
     return request({
-        url: "/manage/category/list",
+        url: "/admin/category/list",
         method: "post"
     });
 }
@@ -14,7 +14,7 @@ export function categoryListApi() {
  */
 export function addCategoryApi(data) {
     return request({
-        url: "/manage/category/add",
+        url: "/admin/category/add",
         method: "post",
         data
     })
@@ -27,7 +27,7 @@ export function addCategoryApi(data) {
  */
 export function modifyCategoryApi(data) {
     return request({
-        url: "/manage/category/modify",
+        url: "/admin/category/modify",
         method: "post",
         data
     })

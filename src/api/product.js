@@ -42,3 +42,30 @@ export function productStateChangeApi(params) {
         params
     })
 }
+
+
+/**
+ * 商品添加
+ * @param data {{name:string, description:string, price:number, categoryId: number, images:Array, detail: string}}
+ * @returns {Promise}
+ */
+export function productAddApi(data) {
+    return request({
+        url: `${prefix}/add`,
+        method: "POST",
+        data
+    })
+}
+
+/**
+ * 商品信息修改
+ * @param data {{id: number, name:string, description:string, price:number, categoryId: number, images:Array, detail: string}}
+ * @returns {Promise}
+ */
+export function productUpdateApi(data) {
+    return request({
+        url: `${prefix}/update`,
+        method: "POST",
+        data
+    })
+}

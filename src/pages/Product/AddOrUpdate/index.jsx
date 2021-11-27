@@ -6,22 +6,20 @@ import {ArrowLeftOutlined} from "@ant-design/icons";
 import "./index.less";
 import {categoryListApi} from "../../../api/category";
 import UploadImage from "../../../components/UploadImage";
-
-
-const normFile = (e) => {
-    console.log('Upload event:', e);
-
-    if (Array.isArray(e)) {
-        return e;
-    }
-
-    return e && e.fileList;
-};
+import RichTextEditor from "../../../components/RichTextEditor";
+import {productAddApi, productDetailApi, productUpdateApi} from "../../../api/product";
 
 
 class AddOrUpdate extends Component {
 
     state = {
+        goods: {
+            name: "",
+            description: "",
+            price: "",
+            status: false
+
+        },
         categoryList: []
     }
 
@@ -60,8 +58,30 @@ class AddOrUpdate extends Component {
 
     componentDidMount() {
         if(!this.isValidate) return;
+        if (this.isUpdate) {
+            this.getGoodsDetail();
+        }
 
         this.getCategoryList();
+    }
+
+    getGoodsDetail() {
+        productDetailApi(this.id).then(res => {
+            console.log(res);
+            this.setState({
+                goods: res.data
+            }, () => {
+                this.onReset();
+            });
+        }).catch( e => {
+            message.warn(e.msg);
+        });
+    }
+
+    onReset() {
+        if(this.formRef){
+            this.formRef.resetFields();
+        }
     }
 
     /**
@@ -76,14 +96,35 @@ class AddOrUpdate extends Component {
     }
 
 
+    sendRequest(values) {
+
+        if (this.isUpdate) {
+            values.id = this.id;
+            return productUpdateApi(values);
+        }
+        return productAddApi(values);
+    }
+
+
     onFinish(values) {
         console.log(values);
+        this.sendRequest(values).then(res => {
+            message.success(res.msg);
+            this.goToGoodsPage();
+        }).catch(e => {
+            message.warn(e.msg);
+        })
+    }
+
+
+    goToGoodsPage() {
+        this.props.history.push("/product/goods", this.props.location.state);
     }
 
 
     renderTitle() {
         return (
-            <Button type="link" onClick={() => {this.props.history.push("/product/goods", this.props.location.state);}}>
+            <Button type="link" onClick={this.goToGoodsPage.bind(this)}>
                 <ArrowLeftOutlined />返回商品详情
             </Button>
         );
@@ -93,13 +134,15 @@ class AddOrUpdate extends Component {
     render() {
         if(!this.isValidate) return null;
         console.log("render AddOrUpdate");
+        const {goods, categoryList} = this.state;
         return (
             <Container title={this.renderTitle()}>
                 <Form
+                    ref={formRef => this.formRef = formRef}
                     name="add-update-form"
                     {...this.formItemLayout}
                     className="add-update-form"
-                    initialValues={{remember: true}}
+                    initialValues={goods}
                     scrollToFirstError={true}
                     onFinish={this.onFinish.bind(this)}
                     // onFinishFailed={this.onFinishFailed.bind(this)}
@@ -108,24 +151,24 @@ class AddOrUpdate extends Component {
                     <Form.Item
                         name="name"
                         label="名称"
-                        rules={[{ required: true }]}
+                        rules={[{required: true}]}
                     >
-                        <Input />
+                        <Input value={goods.name || ""}/>
                     </Form.Item>
                     <Form.Item
                         name="description"
                         label="描述"
                         hasFeedback
-                        rules={[{ required: true }]}
+                        rules={[{required: true}]}
                     >
-                        <Input />
+                        <Input/>
                     </Form.Item>
 
                     <Form.Item
                         name="price"
                         label="价格"
                         hasFeedback
-                        rules={[{ required: true }]}
+                        rules={[{required: true}]}
                     >
                         <Input
                             prefix="￥"
@@ -135,29 +178,41 @@ class AddOrUpdate extends Component {
                         />
                     </Form.Item>
 
-                    <Form.Item name="category" label="分类" rules={[{ required: true }]}>
+                    <Form.Item name="categoryId" label="分类" rules={[{required: true}]}>
                         <Select
-                            placeholder="Select a option and change input text above"
+                            placeholder="选择商品分类!"
                             allowClear
                         >
                             {
-                                this.state.categoryList.map(item =>
-                                    (<Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)
+                                categoryList.map(item =>
+                                    (<Select.Option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </Select.Option>)
                                 )
                             }
                         </Select>
-                     </Form.Item>
+                    </Form.Item>
 
                     <Form.Item name="images"
-                          label="商品图片"
-                          valuePropName="fileList"
-                          getValueFromEvent={normFile}
+                               // initialValue={["http://127.0.0.1:10086/storage/fetch/2021/11/23/dfc45f494c3647b0b2e14d2cd97e5790.jpg"]}
+                               label="商品图片"
+                               valuePropName="images"
+                               rules={[{required: true}]}
+                               getValueFromEvent={data => data}
                     >
                         <UploadImage
-                            ref={images => this.imagesEL = images}
-                            urls={["http://127.0.0.1:9527/image/9f976a7d-e3f3-460a-a0ed-b9084586ea3e.jpg"]}
+                            name="images"
                             max={4}
                         />
+                    </Form.Item>
+
+                    <Form.Item name="detail"
+                               rules={[{required: true}]}
+                               label="详情描述"
+                               valuePropName="value"
+                               getValueFromEvent={data => data}
+                    >
+                        <RichTextEditor />
                     </Form.Item>
 
 

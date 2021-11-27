@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { EditorState, convertToRaw } from 'draft-js';
+import {ContentState, EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
-// import htmlToDraft from 'html-to-draftjs';
+import htmlToDraft from 'html-to-draftjs';
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./index.less";
@@ -13,9 +13,29 @@ import "./index.less";
 */
 
 class RichTextEditor extends Component {
-    state = {
-        editorState: EditorState.createEmpty(),
+
+    static EMPTY_RICH_TEXT = "<p></p>";
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editorState: this.initEditorState(props)
+        }
     }
+
+
+    initEditorState(props) {
+        if(props.value && "" !== props.value && RichTextEditor.EMPTY_RICH_TEXT !== props.value) {
+            const contentBlock = htmlToDraft(props.value);
+            if (contentBlock) {
+                const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+                return EditorState.createWithContent(contentState);
+            }
+        }
+
+        return EditorState.createEmpty();
+    }
+
 
     submitValue(editorState) {
         const onChange = this.props.onChange;
@@ -46,18 +66,14 @@ class RichTextEditor extends Component {
                     editorClassName="demo-editor editor-box"
                     onEditorStateChange={this.onEditorStateChange.bind(this)}
                 />
-                <textarea
-                    disabled
-                    name="detail"
-                    value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-                />
             </>
         );
     }
 }
 
 RichTextEditor.propTypes = {
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    value: PropTypes.string
 };
 
 export default RichTextEditor;

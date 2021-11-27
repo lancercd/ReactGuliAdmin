@@ -38,7 +38,7 @@ class LoginForm extends Component {
             this.props.history.replace("/home");
         }).catch(e => {
             console.log("catch", e);
-            message.error(e.status);
+            message.error(e.msg);
         })
     };
 

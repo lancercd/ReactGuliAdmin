@@ -64,7 +64,6 @@ class UploadImage extends Component {
     getImageUrls(fileList) {
         let urls = [];
         const len = fileList.length;
-        console.log("getImageUrls", fileList);
 
         for(let i=0; i<len; ++i) {
             const item = fileList[i];
@@ -106,7 +105,6 @@ class UploadImage extends Component {
      * @param fileListItem
      */
     handleFileUploadErr(fileListItem) {
-        console.error("file upload error");
         fileListItem.status = "error";
         message.error(fileListItem.response.status || "文件上传失败!");
     }
@@ -120,7 +118,6 @@ class UploadImage extends Component {
             this.handleFileUploadErr(file);
         }else {
             file.url = file.response.data.url;
-            console.log(file.url);
             this.submitValue(fileList);
             message.success("文件上传成功!");
         }
@@ -132,7 +129,6 @@ class UploadImage extends Component {
      * @param fileList
      */
     onFileRemoved(file, fileList) {
-        console.log("删除了某个文件");
         const {url} = file;
         if(!url) return;
         /*
